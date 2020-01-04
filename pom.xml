@@ -38,11 +38,13 @@
             <version>${dl4j.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.datavec/datavec-api -->
+        <!--
         <dependency>
             <groupId>org.datavec</groupId>
             <artifactId>datavec-api</artifactId>
             <version>${dl4j.version}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.datavec</groupId>
             <artifactId>datavec-local</artifactId>
