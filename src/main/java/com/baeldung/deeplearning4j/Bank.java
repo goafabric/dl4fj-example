@@ -37,7 +37,7 @@ public class Bank {
 
         final TransformProcess transformProcess = getTransformProcess(schema, analysis);
 
-        //train(inputSplit, transformProcess);
+        train(inputSplit, transformProcess);
 
     }
 
@@ -77,6 +77,14 @@ public class Bank {
                 .build();
     }
 
+    private static void train(FileSplit inputSplit, TransformProcess transformProcess) throws IOException, InterruptedException {
+        final RecordReaderDataSetIterator trainIterator = createTrainIterator(inputSplit, transformProcess);
+        final MultiLayerConfiguration config = createNeuralNetConfig(transformProcess.getFinalSchema());
+
+        final MultiLayerNetwork model = new MultiLayerNetwork(config);
+        model.init();
+        model.fit(trainIterator, 59);
+    }
 
     private static RecordReaderDataSetIterator createTrainIterator(FileSplit inputSplit, TransformProcess transformProcess) throws IOException, InterruptedException {
         TransformProcessRecordReader trainRecordReader = new TransformProcessRecordReader(new CSVRecordReader(), transformProcess);
@@ -89,30 +97,21 @@ public class Bank {
 
     private static MultiLayerConfiguration createNeuralNetConfig(Schema finalSchema) {
         return new NeuralNetConfiguration.Builder()
-                    .seed(0xC0FFEE)
-                    .weightInit(WeightInit.XAVIER)
-                    .activation(Activation.TANH)
-                    .updater(new Adam.Builder().learningRate(0.001).build())
-                    .l2(0.0000316)
-                    .list(
-                            new DenseLayer.Builder().nOut(25).build(),
-                            new DenseLayer.Builder().nOut(25).build(),
-                            new DenseLayer.Builder().nOut(25).build(),
-                            new DenseLayer.Builder().nOut(25).build(),
-                            new DenseLayer.Builder().nOut(25).build(),
-                            new OutputLayer.Builder(new LossMCXENT()).nOut(2).activation(Activation.SOFTMAX).build()
-                    )
-                    .setInputType(InputType.feedForward(finalSchema.numColumns() - 1))
-                    .build();
-    }
-
-    private static void train(FileSplit inputSplit, TransformProcess transformProcess) throws IOException, InterruptedException {
-        final RecordReaderDataSetIterator trainIterator = createTrainIterator(inputSplit, transformProcess);
-        final MultiLayerConfiguration config = createNeuralNetConfig(transformProcess.getFinalSchema());
-
-        final MultiLayerNetwork model = new MultiLayerNetwork(config);
-        model.init();
-        model.fit(trainIterator, 59);
+                .seed(0xC0FFEE)
+                .weightInit(WeightInit.XAVIER)
+                .activation(Activation.TANH)
+                .updater(new Adam.Builder().learningRate(0.001).build())
+                .l2(0.0000316)
+                .list(
+                        new DenseLayer.Builder().nOut(25).build(),
+                        new DenseLayer.Builder().nOut(25).build(),
+                        new DenseLayer.Builder().nOut(25).build(),
+                        new DenseLayer.Builder().nOut(25).build(),
+                        new DenseLayer.Builder().nOut(25).build(),
+                        new OutputLayer.Builder(new LossMCXENT()).nOut(2).activation(Activation.SOFTMAX).build()
+                )
+                .setInputType(InputType.feedForward(finalSchema.numColumns() - 1))
+                .build();
     }
 
 }
