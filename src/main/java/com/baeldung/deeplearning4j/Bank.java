@@ -24,7 +24,7 @@ public class Bank {
     private static CSVRecordReader createRecordReader() throws IOException, InterruptedException {
         Random random = new Random();
         random.setSeed(0xC0FFEE);
-        FileSplit inputSplit = new FileSplit(new ClassPathResource("Churn_Modelling.csv").getFile(), random);
+        FileSplit inputSplit = new FileSplit(new ClassPathResource("churn/").getFile(), random);
 
         CSVRecordReader recordReader = new CSVRecordReader();
         recordReader.initialize(inputSplit);
