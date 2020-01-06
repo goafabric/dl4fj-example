@@ -2,6 +2,6 @@
 
 This module contains articles about Deeplearning4j.
 
-### Relevant Articles:
+###Links
+- https://jaxenter.de/deeplearning4j-schnelleinstieg-teil-1-76660
 - [A Guide to Deeplearning4j](https://www.baeldung.com/deeplearning4j)
-- [Logistic Regression in Java](https://www.baeldung.com/java-logistic-regression)
